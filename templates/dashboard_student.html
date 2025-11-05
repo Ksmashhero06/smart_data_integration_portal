@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1 class="hero-title">Student Dashboard</h1>
+    </div>
+
+    <!-- Your Records Section -->
+    <div class="section-card">
+        <h2>Your Records</h2>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Data</th>
+                        <th>Category</th>
+                        <th>Department</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                        <tr>
+                            <td>{{ record.timestamp | datetime }}</td>
+                            <td>{{ record.data }}</td>
+                            <td>{{ record.category }}</td>
+                            <td>{{ record.department }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Annual Reports Section -->
+    <div class="section-card">
+        <h2>Annual Reports</h2>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Submitted By</th>
+                        <th>Report For</th>
+                        <th>Category</th>
+                        <th>Event Dates</th>
+                        <th>Department</th>
+                        <th>Data</th>
+                        <th>Certificate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for report_id, report in annual_reports.items() %}
+                        <tr>
+                            <td>{{ report.timestamp | datetime }}</td>
+                            <td>{{ report.author }}</td>
+                            <td>{{ report.target }}</td>
+                            <td>{{ report.category }}</td>
+                            <td>
+                                {% if report.from_date == report.to_date %}
+                                    {{ report.from_date }}
+                                {% else %}
+                                    {{ report.from_date }} to {{ report.to_date }}
+                                {% endif %}
+                            </td>
+                            <td>{{ report.department }}</td>
+                            <td>{{ report.data }}</td>
+                            <td>
+                                {% if report.certificate %}
+                                    <a href="{{ url_for('download_certificate', report_id=report_id) }}" class="btn btn-sm btn-secondary">Download</a>
+                                {% else %}
+                                    No Certificate
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+.dashboard-wrapper {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+    position: relative;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Subtle geometric overlay */
+.dashboard-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" d="M0 50 L50 0 L100 50 L50 100 Z"/></svg>') repeat;
+    opacity: 0.3;
+    z-index: 0;
+}
+
+.hero-section {
+    text-align: center;
+    color: #fff;
+    z-index: 1;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.section-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px 0;
+    animation: fadeInUp 1s ease-in-out;
+    z-index: 1;
+}
+
+.section-card h2 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    table-layout: auto;
+}
+
+.table th, .table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    word-wrap: break-word;
+    font-size: 0.85rem;
+}
+
+.table th {
+    background-color: #2c3e50;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+/* Adjust column widths for Your Records table */
+.table:nth-child(1) th:nth-child(1), .table:nth-child(1) td:nth-child(1) { width: 20%; } /* Timestamp */
+.table:nth-child(1) th:nth-child(2), .table:nth-child(1) td:nth-child(2) { width: 40%; } /* Data */
+.table:nth-child(1) th:nth-child(3), .table:nth-child(1) td:nth-child(3) { width: 20%; } /* Category */
+.table:nth-child(1) th:nth-child(4), .table:nth-child(1) td:nth-child(4) { width: 20%; } /* Department */
+
+/* Adjust column widths for Annual Reports table */
+.table:nth-child(2) th:nth-child(1), .table:nth-child(2) td:nth-child(1) { width: 12%; } /* Timestamp */
+.table:nth-child(2) th:nth-child(2), .table:nth-child(2) td:nth-child(2) { width: 10%; } /* Submitted By */
+.table:nth-child(2) th:nth-child(3), .table:nth-child(2) td:nth-child(3) { width: 10%; } /* Report For */
+.table:nth-child(2) th:nth-child(4), .table:nth-child(2) td:nth-child(4) { width: 10%; } /* Category */
+.table:nth-child(2) th:nth-child(5), .table:nth-child(2) td:nth-child(5) { width: 12%; } /* Event Dates */
+.table:nth-child(2) th:nth-child(6), .table:nth-child(2) td:nth-child(6) { width: 10%; } /* Department */
+.table:nth-child(2) th:nth-child(7), .table:nth-child(2) td:nth-child(7) { width: 26%; } /* Data */
+.table:nth-child(2) th:nth-child(8), .table:nth-child(2) td:nth-child(8) { width: 10%; } /* Certificate */
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-sm {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .section-card {
+        padding: 20px;
+    }
+
+    .table th, .table td {
+        padding: 6px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+
+    .btn-sm {
+        padding: 3px 6px;
+        font-size: 0.75rem;
+    }
+
+    .table th, .table td {
+        padding: 4px;
+        font-size: 0.75rem;
+    }
+}
+</style>
+{% endblock %}

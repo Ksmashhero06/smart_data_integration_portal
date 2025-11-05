@@ -1,0 +1,428 @@
+[
+    {
+        "timestamp": 1748171193.1446064,
+        "user": "faculty1",
+        "action": "logout",
+        "details": "User faculty1 logged out"
+    },
+    {
+        "timestamp": 1748171925.7002156,
+        "user": "student1",
+        "action": "login",
+        "details": "User student1 logged in"
+    },
+    {
+        "timestamp": 1748171934.2272482,
+        "user": "student1",
+        "action": "logout",
+        "details": "User student1 logged out"
+    },
+    {
+        "timestamp": 1748171973.4685326,
+        "user": "admin1",
+        "action": "login",
+        "details": "User admin1 logged in"
+    },
+    {
+        "timestamp": 1748172032.3714192,
+        "user": "admin1",
+        "action": "logout",
+        "details": "User admin1 logged out"
+    },
+    {
+        "timestamp": 1748172045.368392,
+        "user": "faculty1",
+        "action": "login",
+        "details": "User faculty1 logged in"
+    },
+    {
+        "timestamp": 1748172070.275586,
+        "user": "faculty1",
+        "action": "logout",
+        "details": "User faculty1 logged out"
+    },
+    {
+        "timestamp": 1748172080.736964,
+        "user": "developer1",
+        "action": "login",
+        "details": "User developer1 logged in"
+    },
+    {
+        "timestamp": 1748172115.0992897,
+        "user": "developer1",
+        "action": "logout",
+        "details": "User developer1 logged out"
+    },
+    {
+        "timestamp": 1748172117.9990098,
+        "user": "faculty1",
+        "action": "login",
+        "details": "User faculty1 logged in"
+    },
+    {
+        "timestamp": 1748172181.9403667,
+        "user": "faculty1",
+        "action": "logout",
+        "details": "User faculty1 logged out"
+    },
+    {
+        "timestamp": 1748172185.4889948,
+        "user": "student1",
+        "action": "login",
+        "details": "User student1 logged in"
+    },
+    {
+        "timestamp": 1748172278.4639335,
+        "user": "student1",
+        "action": "logout",
+        "details": "User student1 logged out"
+    },
+    {
+        "timestamp": 1748172283.424246,
+        "user": "faculty1",
+        "action": "login",
+        "details": "User faculty1 logged in"
+    },
+    {
+        "timestamp": 1748172475.8348734,
+        "user": "faculty1",
+        "action": "logout",
+        "details": "User faculty1 logged out"
+    },
+    {
+        "timestamp": 1748172486.2422721,
+        "user": "faculty1",
+        "action": "login",
+        "details": "User faculty1 logged in"
+    },
+    {
+        "timestamp": 1748173077.2927647,
+        "user": "faculty1",
+        "action": "logout",
+        "details": "User faculty1 logged out"
+    },
+    {
+        "timestamp": 1748173085.3388875,
+        "user": "faculty1",
+        "action": "login",
+        "details": "User faculty1 logged in"
+    },
+    {
+        "timestamp": 1748173184.7181952,
+        "user": "faculty1",
+        "action": "logout",
+        "details": "User faculty1 logged out"
+    },
+    {
+        "timestamp": 1748173188.216196,
+        "user": "developer1",
+        "action": "login",
+        "details": "User developer1 logged in"
+    },
+    {
+        "timestamp": 1748173629.884703,
+        "user": "developer1",
+        "action": "logout",
+        "details": "User developer1 logged out"
+    },
+    {
+        "timestamp": 1748173635.6162124,
+        "user": "faculty1",
+        "action": "login",
+        "details": "User faculty1 logged in"
+    },
+    {
+        "timestamp": 1748174821.7779815,
+        "user": "faculty1",
+        "action": "logout",
+        "details": "User faculty1 logged out"
+    },
+    {
+        "timestamp": 1748174825.716225,
+        "user": "student1",
+        "action": "login",
+        "details": "User student1 logged in"
+    },
+    {
+        "timestamp": 1748174829.1947458,
+        "user": "student1",
+        "action": "logout",
+        "details": "User student1 logged out"
+    },
+    {
+        "timestamp": 1748174835.418931,
+        "user": "faculty1",
+        "action": "login",
+        "details": "User faculty1 logged in"
+    },
+    {
+        "timestamp": 1748174838.7737923,
+        "user": "faculty1",
+        "action": "logout",
+        "details": "User faculty1 logged out"
+    },
+    {
+        "timestamp": 1748174842.654748,
+        "user": "developer1",
+        "action": "login",
+        "details": "User developer1 logged in"
+    },
+    {
+        "timestamp": 1748174851.9506311,
+        "user": "developer1",
+        "action": "analyze_snapshot",
+        "details": "Snapshot analysis performed: "
+    },
+    {
+        "timestamp": 1748174856.435649,
+        "user": "developer1",
+        "action": "validate_blockchain",
+        "details": "Blockchain validation performed: tampering"
+    },
+    {
+        "timestamp": 1748174860.3257806,
+        "user": "developer1",
+        "action": "validate_blockchain",
+        "details": "Blockchain validation performed: invalid_hash"
+    },
+    {
+        "timestamp": 1748174865.2500317,
+        "user": "developer1",
+        "action": "validate_blockchain",
+        "details": "Blockchain validation performed: double_submission"
+    },
+    {
+        "timestamp": 1748174884.6196854,
+        "user": "developer1",
+        "action": "validate_blockchain",
+        "details": "Blockchain validation performed: double_submission"
+    },
+    {
+        "timestamp": 1748174889.459289,
+        "user": "developer1",
+        "action": "validate_blockchain",
+        "details": "Blockchain validation performed: invalid_hash"
+    },
+    {
+        "timestamp": 1748174898.3347056,
+        "user": "developer1",
+        "action": "logout",
+        "details": "User developer1 logged out"
+    },
+    {
+        "timestamp": 1748174912.5852764,
+        "user": "admin1",
+        "action": "login",
+        "details": "User admin1 logged in"
+    },
+    {
+        "timestamp": 1748174979.5490737,
+        "user": "admin1",
+        "action": "logout",
+        "details": "User admin1 logged out"
+    },
+    {
+        "timestamp": 1748174982.7630212,
+        "user": "faculty1",
+        "action": "login",
+        "details": "User faculty1 logged in"
+    },
+    {
+        "timestamp": 1748175344.534608,
+        "user": "faculty1",
+        "action": "logout",
+        "details": "User faculty1 logged out"
+    },
+    {
+        "timestamp": 1748175375.8585145,
+        "user": "faculty1",
+        "action": "login",
+        "details": "User faculty1 logged in"
+    },
+    {
+        "timestamp": 1748175463.5274293,
+        "user": "faculty1",
+        "action": "update_annual_report",
+        "details": "Annual report 64074668-ee20-48f7-92fc-33d20b3c5e7e updated (Workshop) for Student"
+    },
+    {
+        "timestamp": 1748175491.9689631,
+        "user": "faculty1",
+        "action": "update_annual_report",
+        "details": "Annual report 24f86309-978c-44e7-8433-ba3484abd0ee updated (Internship) for Student"
+    },
+    {
+        "timestamp": 1748175603.5918233,
+        "user": "faculty1",
+        "action": "submit_annual_report",
+        "details": "Annual report 9efa130a-c591-4ce1-a454-23b46ee67e0a submitted (Workshop) for Student"
+    },
+    {
+        "timestamp": 1748175719.185098,
+        "user": "faculty1",
+        "action": "submit_annual_report",
+        "details": "Annual report 023378a8-9ac4-4874-a418-36909371d7aa submitted (Internship) for Student"
+    },
+    {
+        "timestamp": 1748175719.2793157,
+        "user": "faculty1",
+        "action": "submit_annual_report",
+        "details": "Annual report b77899bd-e3ee-43d0-ad25-1be2e1bd59ea submitted (Internship) for Student"
+    },
+    {
+        "timestamp": 1748175781.434468,
+        "user": "faculty1",
+        "action": "logout",
+        "details": "User faculty1 logged out"
+    },
+    {
+        "timestamp": 1748175801.4248867,
+        "user": "student1",
+        "action": "login",
+        "details": "User student1 logged in"
+    },
+    {
+        "timestamp": 1748175827.3732193,
+        "user": "student1",
+        "action": "logout",
+        "details": "User student1 logged out"
+    },
+    {
+        "timestamp": 1748175832.4963121,
+        "user": "developer1",
+        "action": "login",
+        "details": "User developer1 logged in"
+    },
+    {
+        "timestamp": 1748175838.5747726,
+        "user": "developer1",
+        "action": "validate_blockchain",
+        "details": "Blockchain validation performed: tampering"
+    },
+    {
+        "timestamp": 1748175855.7649598,
+        "user": "developer1",
+        "action": "analyze_snapshot",
+        "details": "Snapshot analysis performed: "
+    },
+    {
+        "timestamp": 1748175860.6475778,
+        "user": "developer1",
+        "action": "validate_blockchain",
+        "details": "Blockchain validation performed: double_submission"
+    },
+    {
+        "timestamp": 1748175873.115083,
+        "user": "developer1",
+        "action": "validate_blockchain",
+        "details": "Blockchain validation performed: invalid_hash"
+    },
+    {
+        "timestamp": 1748175884.953031,
+        "user": "developer1",
+        "action": "analyze_snapshot",
+        "details": "Snapshot analysis performed: "
+    },
+    {
+        "timestamp": 1748175917.4479342,
+        "user": "developer1",
+        "action": "logout",
+        "details": "User developer1 logged out"
+    },
+    {
+        "timestamp": 1748175930.8450873,
+        "user": "admin1",
+        "action": "login",
+        "details": "User admin1 logged in"
+    },
+    {
+        "timestamp": 1748175975.6922038,
+        "user": "admin1",
+        "action": "add_user",
+        "details": "User student10 added with role student"
+    },
+    {
+        "timestamp": 1755364881.6536129,
+        "user": "admin1",
+        "action": "login",
+        "details": "User admin1 logged in"
+    },
+    {
+        "timestamp": 1755365342.6565232,
+        "user": "admin1",
+        "action": "logout",
+        "details": "User admin1 logged out"
+    },
+    {
+        "timestamp": 1755365438.2217472,
+        "user": "admin1",
+        "action": "login",
+        "details": "User admin1 logged in"
+    },
+    {
+        "timestamp": 1755366151.8182673,
+        "user": "admin1",
+        "action": "logout",
+        "details": "User admin1 logged out"
+    },
+    {
+        "timestamp": 1755366249.8332863,
+        "user": "student1",
+        "action": "login",
+        "details": "User student1 logged in"
+    },
+    {
+        "timestamp": 1755366275.4645004,
+        "user": "student1",
+        "action": "logout",
+        "details": "User student1 logged out"
+    },
+    {
+        "timestamp": 1755366290.958795,
+        "user": "faculty1",
+        "action": "login",
+        "details": "User faculty1 logged in"
+    },
+    {
+        "timestamp": 1755366430.2645903,
+        "user": "faculty1",
+        "action": "logout",
+        "details": "User faculty1 logged out"
+    },
+    {
+        "timestamp": 1755366450.5444355,
+        "user": "developer1",
+        "action": "login",
+        "details": "User developer1 logged in"
+    },
+    {
+        "timestamp": 1755366748.3201163,
+        "user": "developer1",
+        "action": "analyze_snapshot",
+        "details": "Snapshot analysis performed: "
+    },
+    {
+        "timestamp": 1755366788.1757355,
+        "user": "developer1",
+        "action": "validate_blockchain",
+        "details": "Blockchain validation performed: tampering"
+    },
+    {
+        "timestamp": 1755366810.4241033,
+        "user": "developer1",
+        "action": "validate_blockchain",
+        "details": "Blockchain validation performed: invalid_hash"
+    },
+    {
+        "timestamp": 1755366824.2880132,
+        "user": "developer1",
+        "action": "logout",
+        "details": "User developer1 logged out"
+    },
+    {
+        "timestamp": 1755366829.822954,
+        "user": "faculty1",
+        "action": "login",
+        "details": "User faculty1 logged in"
+    }
+]

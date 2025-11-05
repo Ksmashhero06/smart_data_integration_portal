@@ -1,0 +1,11 @@
+[
+    {
+        "index": 0,
+        "timestamp": 1748172268.7570257,
+        "data": "Genesis Block",
+        "previous_hash": "0",
+        "target": "None",
+        "target_username": "None",
+        "hash": "8ef47cb50b1d1613aa82e9f892fd4607ea0c1146b7a7ee106d854a11905bacb5"
+    }
+]

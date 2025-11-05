@@ -1,0 +1,4 @@
+{
+    "attack_type": "invalid_hash",
+    "result": "Not enough blocks to inject invalid hash"
+}

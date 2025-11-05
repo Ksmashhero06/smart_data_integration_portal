@@ -1,0 +1,579 @@
+{% extends "base.html" %}
+
+{% block title %}Faculty Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1 class="hero-title">Faculty Dashboard</h1>
+    </div>
+
+    <!-- Annual Reports Section -->
+    <div class="section-card">
+        <h2>Annual Reports</h2>
+        <a href="#submit-report" class="btn btn-primary" onclick="openModal('submitModal')">Submit New Report</a>
+
+        <div class="filters">
+            <select id="departmentFilter">
+                <option value="">All Departments</option>
+                <option value="Information Technology">Information Technology</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Mechanical">Mechanical</option>
+                <option value="Civil">Civil</option>
+            </select>
+            <select id="categoryFilter">
+                <option value="">All Categories</option>
+                {% for category in ['Seminar', 'Workshop', 'Project', 'Internship', 'Hackathon', 'Paper Publishing'] %}
+                    <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Submitted By</th>
+                        <th>Report For</th>
+                        <th>Category</th>
+                        <th>Event Dates</th>
+                        <th>Department</th>
+                        <th>Data</th>
+                        <th>Hash</th>
+                        <th>Certificate</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for report_id, report in annual_reports.items() %}
+                        <tr>
+                            <td>{{ report.timestamp | datetime }}</td>
+                            <td>{{ report.author }}</td>
+                            <td>{{ report.target }}</td>
+                            <td>{{ report.category }}</td>
+                            <td>
+                                {% if report.from_date == report.to_date %}
+                                    {{ report.from_date }}
+                                {% else %}
+                                    {{ report.from_date }} to {{ report.to_date }}
+                                {% endif %}
+                            </td>
+                            <td>{{ report.department }}</td>
+                            <td>{{ report.data }}</td>
+                            <td>
+                                {% if report.get('hash') %}
+                                    {{ report.hash[:8] }}...
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if report.certificate %}
+                                    <a href="{{ url_for('download_certificate', report_id=report_id) }}" class="btn btn-sm btn-secondary">Download</a>
+                                {% else %}
+                                    No Certificate
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="#update-report-{{ report_id }}" class="btn btn-sm btn-warning" onclick="openUpdateModal('updateModal{{ report_id }}', '{{ report_id }}')">Update</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Submit Report Modal -->
+    <div id="submitModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('submitModal')">×</span>
+            <h2>Submit Annual Report</h2>
+            <form method="POST" action="{{ url_for('submit_annual_report') }}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="target">Report For:</label>
+                    <select name="target" id="target" required>
+                        <option value="Student">Student</option>
+                        <option value="Faculty">Faculty</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="report_data">Report Data:</label>
+                    <textarea name="report_data" id="report_data" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select name="category" id="category" required>
+                        {% for category in ['Seminar', 'Workshop', 'Project', 'Internship', 'Hackathon', 'Paper Publishing'] %}
+                            <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Event Dates:</label>
+                    <div class="date-toggle">
+                        <button type="button" class="btn btn-secondary date-btn active" onclick="toggleDateInputs('one-day', 'submitModal')">One Day</button>
+                        <button type="button" class="btn btn-secondary date-btn" onclick="toggleDateInputs('multiple-days', 'submitModal')">Multiple Days</button>
+                    </div>
+                    <div id="submitModal-one-day" class="date-inputs">
+                        <label for="event_date">Event Date:</label>
+                        <input type="date" name="event_date" id="event_date">
+                    </div>
+                    <div id="submitModal-multiple-days" class="date-inputs" style="display: none;">
+                        <label for="from_date">From Date:</label>
+                        <input type="date" name="from_date" id="from_date">
+                        <label for="to_date">To Date:</label>
+                        <input type="date" name="to_date" id="to_date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="department">Department:</label>
+                    <select name="department" id="department" required>
+                        <option value="Information Technology">Information Technology</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Mechanical">Mechanical</option>
+                        <option value="Civil">Civil</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="certificate">Certificate (PDF, PNG, JPG):</label>
+                    <input type="file" name="certificate" id="certificate" accept=".pdf,.png,.jpg,.jpeg">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Report</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Update Report Modals -->
+    {% for report_id, report in annual_reports.items() %}
+    <div id="updateModal{{ report_id }}" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('updateModal{{ report_id }}')">×</span>
+            <h2>Update Annual Report</h2>
+            <form method="POST" action="{{ url_for('update_annual_report', report_id=report_id) }}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="target_{{ report_id }}">Report For:</label>
+                    <select name="target" id="target_{{ report_id }}" required>
+                        <option value="Student" {% if report.target == 'Student' %}selected{% endif %}>Student</option>
+                        <option value="Faculty" {% if report.target == 'Faculty' %}selected{% endif %}>Faculty</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="report_data_{{ report_id }}">Report Data:</label>
+                    <textarea name="report_data" id="report_data_{{ report_id }}" required>{{ report.data }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="category_{{ report_id }}">Category:</label>
+                    <select name="category" id="category_{{ report_id }}" required>
+                        {% for category in ['Seminar', 'Workshop', 'Project', 'Internship', 'Hackathon', 'Paper Publishing'] %}
+                            <option value="{{ category }}" {% if category == report.category %}selected{% endif %}>{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Event Dates:</label>
+                    <div class="date-toggle">
+                        <button type="button" class="btn btn-secondary date-btn {% if report.from_date == report.to_date %}active{% endif %}" onclick="toggleDateInputs('one-day', 'updateModal{{ report_id }}')">One Day</button>
+                        <button type="button" class="btn btn-secondary date-btn {% if report.from_date != report.to_date %}active{% endif %}" onclick="toggleDateInputs('multiple-days', 'updateModal{{ report_id }}')">Multiple Days</button>
+                    </div>
+                    <div id="updateModal{{ report_id }}-one-day" class="date-inputs" {% if report.from_date != report.to_date %}style="display: none;"{% endif %}>
+                        <label for="event_date_{{ report_id }}">Event Date:</label>
+                        <input type="date" name="event_date" id="event_date_{{ report_id }}" value="{% if report.from_date == report.to_date %}{{ report.from_date }}{% endif %}">
+                    </div>
+                    <div id="updateModal{{ report_id }}-multiple-days" class="date-inputs" {% if report.from_date == report.to_date %}style="display: none;"{% endif %}>
+                        <label for="from_date_{{ report_id }}">From Date:</label>
+                        <input type="date" name="from_date" id="from_date_{{ report_id }}" value="{% if report.from_date != report.to_date %}{{ report.from_date }}{% endif %}">
+                        <label for="to_date_{{ report_id }}">To Date:</label>
+                        <input type="date" name="to_date" id="to_date_{{ report_id }}" value="{% if report.from_date != report.to_date %}{{ report.to_date }}{% endif %}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="department_{{ report_id }}">Department:</label>
+                    <select name="department" id="department_{{ report_id }}" required>
+                        <option value="Information Technology" {% if report.department == 'Information Technology' %}selected{% endif %}>Information Technology</option>
+                        <option value="Computer Science" {% if report.department == 'Computer Science' %}selected{% endif %}>Computer Science</option>
+                        <option value="Electronics" {% if report.department == 'Electronics' %}selected{% endif %}>Electronics</option>
+                        <option value="Mechanical" {% if report.department == 'Mechanical' %}selected{% endif %}>Mechanical</option>
+                        <option value="Civil" {% if report.department == 'Civil' %}selected{% endif %}>Civil</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="certificate_{{ report_id }}">Certificate (PDF, PNG, JPG):</label>
+                    <input type="file" name="certificate" id="certificate_{{ report_id }}" accept=".pdf,.png,.jpg,.jpeg">
+                </div>
+                <button type="submit" class="btn btn-primary">Update Report</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+function openModal(modalId) {
+    document.getElementById(modalId).style.display = 'block';
+}
+
+function openUpdateModal(modalId, reportId) {
+    document.getElementById(modalId).style.display = 'block';
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+window.onclick = function(event) {
+    if (event.target.className === 'modal') {
+        event.target.style.display = 'none';
+    }
+}
+
+function toggleDateInputs(type, modalId) {
+    const oneDayDiv = document.getElementById(modalId + '-one-day');
+    const multipleDaysDiv = document.getElementById(modalId + '-multiple-days');
+    const buttons = document.querySelectorAll('#' + modalId + ' .date-toggle .date-btn');
+
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+
+    if (type === 'one-day') {
+        oneDayDiv.style.display = 'block';
+        multipleDaysDiv.style.display = 'none';
+    } else {
+        oneDayDiv.style.display = 'none';
+        multipleDaysDiv.style.display = 'block';
+    }
+}
+</script>
+
+<style>
+.dashboard-wrapper {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+    position: relative;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Subtle geometric overlay */
+.dashboard-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" d="M0 50 L50 0 L100 50 L50 100 Z"/></svg>') repeat;
+    opacity: 0.3;
+    z-index: 0;
+}
+
+.hero-section {
+    text-align: center;
+    color: #fff;
+    z-index: 1;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.section-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px 0;
+    animation: fadeInUp 1s ease-in-out;
+    z-index: 1;
+}
+
+.section-card h2 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.filters {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.filters select {
+    padding: 10px;
+    margin: 0 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.filters select:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    table-layout: auto;
+}
+
+.table th, .table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    word-wrap: break-word;
+    font-size: 0.85rem;
+}
+
+.table th {
+    background-color: #2c3e50;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+/* Adjust column widths */
+.table th:nth-child(1), .table td:nth-child(1) { width: 12%; } /* Timestamp */
+.table th:nth-child(2), .table td:nth-child(2) { width: 10%; } /* Submitted By */
+.table th:nth-child(3), .table td:nth-child(3) { width: 8%; }  /* Report For */
+.table th:nth-child(4), .table td:nth-child(4) { width: 10%; } /* Category */
+.table th:nth-child(5), .table td:nth-child(5) { width: 12%; } /* Event Dates */
+.table th:nth-child(6), .table td:nth-child(6) { width: 10%; } /* Department */
+.table th:nth-child(7), .table td:nth-child(7) { width: 15%; } /* Data */
+.table th:nth-child(8), .table td:nth-child(8) { width: 8%; }  /* Hash */
+.table th:nth-child(9), .table td:nth-child(9) { width: 8%; }  /* Certificate */
+.table th:nth-child(10), .table td:nth-child(10) { width: 7%; } /* Actions */
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.btn-sm {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+}
+
+.date-toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.date-btn {
+    margin: 0 5px;
+}
+
+.date-btn.active {
+    background-color: #2980b9;
+}
+
+.date-inputs label {
+    margin-top: 10px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 0.5s ease-in-out;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #000;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .section-card {
+        padding: 20px;
+    }
+
+    .filters {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .filters select {
+        width: 100%;
+        max-width: 300px;
+        margin: 5px 0;
+    }
+
+    .table th, .table td {
+        padding: 6px;
+        font-size: 0.8rem;
+    }
+
+    .modal-content {
+        margin: 10% auto;
+        width: 95%;
+    }
+
+    .date-toggle {
+        flex-direction: column;
+    }
+
+    .date-btn {
+        width: 100%;
+        max-width: 200px;
+        margin: 5px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+
+    .btn-sm {
+        padding: 3px 6px;
+        font-size: 0.75rem;
+    }
+
+    .table th, .table td {
+        padding: 4px;
+        font-size: 0.75rem;
+    }
+}
+</style>
+{% endblock %}
